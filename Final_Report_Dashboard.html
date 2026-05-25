@@ -1,0 +1,209 @@
+#!/bin/bash
+# IBV Sequence Analysis - Quick Start Guide
+# Common commands and workflows
+
+echo "╔════════════════════════════════════════════════════════════╗"
+echo "║  IBV Sequence Analysis Dashboard - Quick Start Guide      ║"
+echo "╚════════════════════════════════════════════════════════════╝"
+echo ""
+
+# Color codes
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+print_section() {
+    echo ""
+    echo -e "${BLUE}═══════════════════════════════════════════${NC}"
+    echo -e "${BLUE}$1${NC}"
+    echo -e "${BLUE}═══════════════════════════════════════════${NC}"
+}
+
+print_example() {
+    echo -e "${YELLOW}$1${NC}"
+}
+
+# ==================== INSTALLATION ====================
+print_section "1. INSTALLATION"
+
+echo "First time setup - install Python dependencies:"
+echo ""
+print_example "$ pip install -r requirements.txt"
+echo ""
+echo "This installs:"
+echo "  • pdfplumber - PDF text extraction"
+echo "  • pandas - Data analysis"
+echo "  • python-docx - Word document manipulation"
+
+# ==================== BASIC USAGE ====================
+print_section "2. EXTRACT MUTATIONS (BASIC)"
+
+echo "Extract NA and AA mutations from SmartGene PDFs:"
+echo ""
+print_example "$ python process_ibv_mutations.py NA_report.pdf AA_report.pdf ./output"
+echo ""
+echo "Output files:"
+echo "  • na_mutations.csv - Nucleic acid mutations"
+echo "  • aa_mutations.csv - Amino acid mutations"
+echo "  • mutation_summary.csv - Statistics"
+echo "  • mutation_report.json - Complete data"
+
+# ==================== REPORT GENERATION ====================
+print_section "3. GENERATE COMPLETE REPORT"
+
+echo "Create a polished Word document report:"
+echo ""
+print_example "$ python generate_ibv_report.py template.docx NA_report.pdf AA_report.pdf metadata.json final_report.docx"
+echo ""
+echo "Required files:"
+echo "  • template.docx - Pre-filled Word template"
+echo "  • NA_report.pdf - Nucleic acid analysis"
+echo "  • AA_report.pdf - Amino acid analysis"
+echo "  • metadata.json - Sample information"
+echo ""
+echo "Output: final_report.docx (ready for review)"
+
+# ==================== BATCH PROCESSING ====================
+print_section "4. BATCH PROCESS MULTIPLE SAMPLES"
+
+echo "Process 10+ samples automatically:"
+echo ""
+print_example "$ python batch_process.py -i ./input_pdfs -o ./output_reports -t template.docx"
+echo ""
+echo "Expected file structure:"
+echo "  input_pdfs/"
+echo "  ├── Sample1_NA.pdf"
+echo "  ├── Sample1_AA.pdf"
+echo "  ├── Sample2_NA.pdf"
+echo "  ├── Sample2_AA.pdf"
+echo "  └── ..."
+echo ""
+echo "Outputs:"
+echo "  output_reports/"
+echo "  ├── Sample1/"
+echo "  │   ├── mutations/"
+echo "  │   └── IBV_Report_Sample1.docx"
+echo "  ├── Sample2/"
+echo "  │   ├── mutations/"
+echo "  │   └── IBV_Report_Sample2.docx"
+echo "  └── batch_summary.json"
+
+# ==================== WORKFLOW ====================
+print_section "5. COMPLETE WORKFLOW"
+
+echo "Step 1: Prepare files"
+print_example "mkdir project && cd project"
+echo ""
+echo "Step 2: Copy your data"
+print_example "cp /path/to/NA_report.pdf ."
+print_example "cp /path/to/AA_report.pdf ."
+print_example "cp template.docx ."
+echo ""
+echo "Step 3: Create metadata"
+print_example "cp metadata_template.json metadata.json"
+print_example "# Edit metadata.json with your sample info"
+echo ""
+echo "Step 4: Extract mutations"
+print_example "python process_ibv_mutations.py NA_report.pdf AA_report.pdf ./mutations"
+echo ""
+echo "Step 5: Generate report"
+print_example "python generate_ibv_report.py template.docx NA_report.pdf AA_report.pdf metadata.json final_report.docx"
+echo ""
+echo "Step 6: Review"
+print_example "open final_report.docx"
+
+# ==================== ADVANCED OPTIONS ====================
+print_section "6. ADVANCED OPTIONS"
+
+echo "Batch processing with mutations only:"
+print_example "python batch_process.py -i ./pdfs -o ./output -t template.docx --no-reports"
+echo ""
+echo "Batch processing with verbose output:"
+print_example "python batch_process.py -i ./pdfs -o ./output -t template.docx -v"
+echo ""
+echo "Python API usage:"
+print_example "python"
+cat << 'EOF'
+>>> from process_ibv_mutations import IBVMutationExtractor
+>>> extractor = IBVMutationExtractor('NA.pdf', 'AA.pdf')
+>>> mutations = extractor.find_aa_mutations()
+>>> for m in mutations:
+...     print(f"Position {m['position']}: {m['hydro_change']}")
+EOF
+echo ""
+
+# ==================== TROUBLESHOOTING ====================
+print_section "7. TROUBLESHOOTING"
+
+echo -e "${YELLOW}Problem: 'No sequences found'${NC}"
+echo "  Solution: Ensure PDF contains multi-alignment sections"
+echo ""
+echo -e "${YELLOW}Problem: 'Wrong reference strain'${NC}"
+echo "  Solution: Check similarity search table format in PDF"
+echo ""
+echo -e "${YELLOW}Problem: 'Placeholder not found in template'${NC}"
+echo "  Solution: Verify template structure matches expected format"
+echo ""
+echo -e "${YELLOW}Problem: 'Permission denied'${NC}"
+echo "  Solution: Make scripts executable: chmod +x *.py"
+
+# ==================== DATA INTERPRETATION ====================
+print_section "8. INTERPRETING RESULTS"
+
+echo "Hydrophobicity Changes:"
+echo "  • Hydrophobic → Hydrophilic: Major structural change ⚠️"
+echo "  • Hydrophilic → Hydrophobic: Conformational change ⚠️"
+echo "  • Neutral: Minor impact ✓"
+echo ""
+echo "Epitope Regions:"
+echo "  • Region 1: Framework - structural"
+echo "  • Region 2: Variable loop - PRIMARY vaccine target"
+echo "  • Region 3: Subdomain - moderate"
+echo "  • Region 4: C-terminal - HIGHEST immune escape risk"
+echo "  • Region 5: Anchor - highly conserved"
+echo ""
+echo "Ct Values:"
+echo "  • <15: Very high viral load"
+echo "  • 15-25: High viral load (typical infection)"
+echo "  • 25-35: Moderate viral load"
+echo "  • >35: Low/no viral load"
+
+# ==================== NEXT STEPS ====================
+print_section "9. NEXT STEPS"
+
+echo "After generating mutations.csv and reports:"
+echo ""
+echo "1. Generate Epitope Graphics:"
+print_example "   python /mnt/skills/user/ibv-epitope-graphics-skill/scripts/generate_epitope_graphics.py \\"
+print_example "     --aa-pdf AA_report.pdf --output epitope_report.docx"
+echo ""
+echo "2. Combine Reports in PowerPoint/Word for presentation"
+echo ""
+echo "3. Archive with sequence data and metadata"
+
+# ==================== SUPPORT ====================
+print_section "10. DOCUMENTATION & SUPPORT"
+
+echo "Files provided:"
+echo "  • README.md - Comprehensive documentation"
+echo "  • process_ibv_mutations.py - Mutation extraction (77 lines)"
+echo "  • generate_ibv_report.py - Report generation (118 lines)"
+echo "  • batch_process.py - Batch processing (285 lines)"
+echo "  • metadata_template.json - Example metadata"
+echo ""
+echo "Skill Integration:"
+echo "  • ibv-sequencing-report-generator"
+echo "  • ibv-epitope-graphics-skill"
+echo ""
+echo "More information: See README.md for complete documentation"
+
+echo ""
+print_section "Ready to Start?"
+
+echo -e "${GREEN}Let's process some IBV samples!${NC}"
+echo ""
+echo "Quick test:"
+print_example "$ python process_ibv_mutations.py sample_NA.pdf sample_AA.pdf ./test_output"
+echo ""
